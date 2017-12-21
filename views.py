@@ -25,9 +25,7 @@ def show_top_coins(entity_dict):
     user_id = entity_dict['user_id']
     top_coin_percent = 30
     top_cryptos = crypto_db.get_percentage('24hr_percent',top_coin_percent)
-    print(top_cryptos)
-    count = 0
-    crp_str = ""
+    top_cryptos = top_cryptos[0:5] # only top 5 crpyts
     for crp in top_cryptos:
         #print(crp,"lol")
         #bot.send_text_message(user_id,"yo")
