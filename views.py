@@ -35,6 +35,8 @@ def show_top_coins(entity_dict):
                 "type":"web_url",
                 "url":crp[3],
             },]
+        if len(top_cryptos) < 3:
+            bot.send_text_message(user_id,"hm... looks like the market isn't doing too well right now. I'm only showing you coins that have made over a 30% gain. This could change in an hour or so, so make sure to check back 😄")
         bot1.send_button_message(user_id,crp_str,crp_btn_text)
 
 def show_top_coins_last_hour(entity_dict):
