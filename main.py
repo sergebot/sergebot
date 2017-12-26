@@ -65,8 +65,12 @@ def handle_message_responses(entity_dict):
     trigger_tags = {
                     "@get_started": views.intro_message,
                     "@show_top_coins":views.show_top_coins,
-                    "@last_hour_coins":views.show_top_coins_last_hour,
                     "@nothing":views.nothing,
+                    "@show_premium":views.show_premium,
+                    "@show_secret_code":views.show_secret_code,
+                    "@ask_free_subscription":views.ask_free_subscription,
+                    "@subscribe":views.subscribe,
+                    "@unsubscribe":views.unsubscribe,
 
     }
 
