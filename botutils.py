@@ -65,18 +65,18 @@ class json_response_builder():
         """ arg format :({
                             "element_data":[{"data":[title,img_url,sub_title,action_url],
                                             "button":[
-                                                {"data":[url,title]}]
+                                                {"data":[type,url,title]}]
                                             },]
                         })
 
             If you don't understand this function don't fret. It's fucking nuts. It takes a while to
             understand. I'll explicity add comments in it so you can understand it better.
-            This function still needs to be upgraded.
+            This function still needs to be updated.
 
             This function builds the template based on the given data.
             The data is structured accordingly, then this function accesses it.
             Multiple template data can be passed in the struct, that's why the for loop.
-            Button data doesnt offer multiple buttons for a single card. Just one button for now.
+            Button data doesnt support multiple buttons for a single card. Just one button for now.
 
 
         """
@@ -86,6 +86,25 @@ class json_response_builder():
         # constructs the generic elements payload
         # loops through the multiple template data struct
         for x in range(len_element):
+            # This condition allows us to add a different type to the cards
+            # Initially this function only supported web_url type that
+            # lets you open a browser instace inside the bot.
+            # Now I've added the postback type. This type responds like the quick
+            # reply button.
+            if elements['element_data'][x]['button'][0] == "postback":
+                button_data = {
+                    "type":"postback",
+                    "payload":elements['element_data'][x]['button'][1],
+                    "title":"{}".format(elements['element_data'][x]['button'][2]),
+                }
+            elif elements['element_data'][x]['button'][0] == "web_url":
+                # default type for the card
+                button_data = {
+                    "type":"web_url",
+                    "url":elements['element_data'][x]['button'][1],
+                    "title":"{}".format(elements['element_data'][x]['button'][2]),
+                }
+
             element_list.append({
                 "title":elements['element_data'][x]['data'][0],
                 "image_url":elements['element_data'][x]['data'][1],
@@ -93,15 +112,9 @@ class json_response_builder():
                 "default_action":{
                     "type": "web_url",
                     "url": elements['element_data'][x]['data'][3],
-                    "webview_height_ratio": "tall",
+                    "webview_height_ratio": "full",
                 },
-                "buttons":[
-                    {
-                        "type":"web_url",
-                        "url":elements['element_data'][x]['button'][0],
-                        "title":"{}".format(elements['element_data'][x]['button'][1]),
-                    },
-                ]
+                "buttons":[button_data] # button data dict is inserted into the list
             })
         return element_list
 
@@ -174,15 +187,44 @@ def Persistant_menu(show_menu=True,composer_input=True):
           "composer_input_disabled":True,
           "call_to_actions":[
             {
-              "title":"Start over",
+              "title":"🕕 Top 5 coins last 24hr",
               "type":"postback",
-              "payload":"@get_started"
+              "payload":"@show_top_coins"
             },
-            #{
-            #  "title":"price last hour",
-            #  "type":"postback",
-            #  "payload":"@last_hour_coins"
-            #},
+            {
+              "title":"🎁 Get Premium for $4.99 🎉",
+              "type":"postback",
+              "payload":"@show_premium"
+            },
+            {
+                "title":"🗄 Menu",
+                "type":"nested",
+                "call_to_actions":[
+                      {
+                        "title":"Premium features",
+                        "type":"postback",
+                        "payload":"@show_premium_features🤘"
+                      },
+                      {
+                         "title":"✉️ Subscriptions",
+                         "type":"nested",
+                         "call_to_actions":[
+
+                             {
+                               "title":"💝 Subscribe",
+                               "type":"postback",
+                               "payload":"@subscribe"
+                             },
+                             {
+                               "title":"💔 Unsubscribe",
+                               "type":"postback",
+                               "payload":"@unsubscribe"
+                             }
+                         ]
+                       },
+                  ]
+
+            }
           ]
         },
         {

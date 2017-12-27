@@ -1,7 +1,6 @@
 
 # This module contains fb_response_handler class to parse the json object sent by FB
 
-import nlp_handler
 
 class fb_response_handler(object):
     ''' This class handles the fb response object

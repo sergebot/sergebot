@@ -71,6 +71,8 @@ def handle_message_responses(entity_dict):
                     "@ask_free_subscription":views.ask_free_subscription,
                     "@subscribe":views.subscribe,
                     "@unsubscribe":views.unsubscribe,
+                    "@ask_premium":views.ask_premium,
+                    "@show_premium_features":views.show_premium_features,
 
     }
 
@@ -85,4 +87,4 @@ def handle_message_responses(entity_dict):
 
 
 if __name__ == '__main__':
-    app.run(debug=True,port=9999,threaded=True)
+    app.run(debug=True,port=9998,threaded=True)
